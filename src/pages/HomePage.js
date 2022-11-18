@@ -8,15 +8,14 @@ export default function HomePage() {
 
     //the side effect - fetch users
     useEffect(() => {
+        async function getData() {
+            const response = await fetch("https://race-crud-rest-default-rtdb.firebaseio.com/users.json"); // read all users from firebase
+            const data = await response.json();
+            const array = Object.keys(data).map(key => ({ id: key, ...data[key] })); // from object to array
+            setUsers(array); // set the state with fetched data
+        }
         getData();
     }, []); // <--- "[]" VERY IMPORTANT!!!
-
-    async function getData() {
-        const response = await fetch("https://race-crud-rest-default-rtdb.firebaseio.com/users.json"); // read all users from firebase
-        const data = await response.json();
-        const array = Object.keys(data).map(key => ({ id: key, ...data[key] })); // from object to array
-        setUsers(array); // set the state with fetched data
-    }
 
     return (
         <section className="page">
